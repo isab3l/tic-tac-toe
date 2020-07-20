@@ -38,12 +38,12 @@ export default function Game() {
     }
   }, [gameOver, scores]);
 
-  const onGameOver =  useCallback((result) => {
+  const onGameOver =  useCallback((winner) => {
     setScores((prevScores) => ({
       ...prevScores,
-      [result]: prevScores[result] + 1
+      [winner]: prevScores[winner] + 1
     }));
-    setStatus(result === 'tie' ? "Tie!" : `${result} wins!`)
+    setStatus(winner === 'tie' ? "Tie!" : `${winner} wins!`)
     _setGameOver(true);
   }, []);
 
@@ -66,11 +66,16 @@ export default function Game() {
     setMove(move === 'X' ? 'O' : 'X');
   };
 
+  const onNewGame = () => {
+    setSpaces(Array(9).fill(null));
+    setMove(Math.random() < 0.5 ? 'X' : 'O');
+    setStatus(`${move}'s move!`);
+    _setGameOver(false);
+  }
 
   return (
-    <div className="board">
+    <div className="game">
       <Scores X={scores.X} O={scores.O} tie={scores.tie}/>
-
       <h2>{status}</h2>
       <div className="board-row">
         <Space value={spaces[0]} onClick={() => handleSpaceClick(0)} />
@@ -89,6 +94,7 @@ export default function Game() {
         <Space value={spaces[7]} onClick={() => handleSpaceClick(7)} />
         <Space value={spaces[8]} onClick={() => handleSpaceClick(8)} />
       </div>
+      {gameOver && <button onClick={onNewGame} className="new-game">New Game</button>}
     </div>
 
   )
