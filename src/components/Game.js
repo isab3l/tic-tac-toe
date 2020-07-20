@@ -71,7 +71,7 @@ export default function Game() {
     setMove(Math.random() < 0.5 ? 'X' : 'O');
     setStatus(`${move}'s move!`);
     _setGameOver(false);
-  }
+  };
 
   return (
     <div className="game">
